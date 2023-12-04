@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FaBars, FaUser } from "react-icons/fa";
+import { MdExitToApp } from "react-icons/md";
+import { FaFilterCircleDollar } from "react-icons/fa6";
 
-import LogoutButton from "../../auth/LogoutButton";
+import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = styled.div`
   height: 100vh;
@@ -41,7 +45,18 @@ const Icon = styled.div`
   align-items: center;
 `;
 
-const SidebarExample = () => {
+const Linkk = styled(Link)`
+  text-decoration: none;
+`;
+
+const Sidebarr = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    navigate("/login");
+  };
+
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = () => {
@@ -57,21 +72,34 @@ const SidebarExample = () => {
           </Icon>
         </MenuItem>
 
-        <MenuItem>
-          <Icon>
-            <FaUser />
-            <Text isExpanded={isExpanded}>Conta</Text>
-          </Icon>
-        </MenuItem>
+        <Linkk to="/home">
+          <MenuItem>
+            <Icon>
+              <FaUser />
+              <Text isExpanded={isExpanded}>Conta</Text>
+            </Icon>
+          </MenuItem>
+        </Linkk>
 
-        <MenuItem>
-          <LogoutButton>
-            <Text isExpanded={isExpanded}></Text>
-          </LogoutButton>
+        <Linkk to="/gastos">
+          <MenuItem>
+            <Icon>
+              <FaFilterCircleDollar />
+
+              <Text isExpanded={isExpanded}>Filtrar</Text>
+            </Icon>
+          </MenuItem>
+        </Linkk>
+
+        <MenuItem onClick={handleLogout}>
+          <Icon>
+            <MdExitToApp />
+            <Text isExpanded={isExpanded}>Logout</Text>
+          </Icon>
         </MenuItem>
       </Sidebar>
     </>
   );
 };
 
-export default SidebarExample;
+export default Sidebarr;

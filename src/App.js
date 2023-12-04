@@ -11,6 +11,7 @@ import RegistrationForm from "./auth/Register";
 import Login from "./auth/Login";
 import UserHome from "./pages/UserHome";
 import Home from "./pages/Home";
+import GastosFiltrados from "../src/pages/GastosFiltrados";
 
 const App = () => {
   const token = document.cookie.replace(
@@ -25,6 +26,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/gastos" element={<GastosFiltrados />} />
 
         {token ? (
           <Route path="/home" element={<UserHome token={token} />} />

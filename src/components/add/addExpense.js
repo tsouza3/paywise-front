@@ -6,8 +6,6 @@ import AddBtn from "../buttons/AddBtn";
 import SubmitButton from "../buttons/SubmitButton";
 import { IoCloseSharp } from "react-icons/io5";
 
-import AddExpense from "./addExpense";
-
 const ModalBackground = styled.div`
   display: ${(props) => (props.isOpen ? "block" : "none")};
   position: fixed;
@@ -49,7 +47,7 @@ const Form = styled.form`
   padding: 2rem;
   width: 100%;
   border-radius: 0.5rem;
-  margin-top: 1em;
+  margin-bottom: 0.5em;
 `;
 
 const InputContainer = styled.div`
@@ -83,10 +81,32 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
-const Add = () => {
+const Select = styled.select`
+  border: 2px solid transparent;
+  width: 15em;
+  height: 2.5em;
+  padding-left: 1em;
+  outline: none;
+  overflow: hidden;
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  transition: all 0.5s;
+
+  &:hover,
+  &:focus {
+    border: 2px solid #3d4e81;
+    box-shadow: 0px 0px 0px 7px rgba(87, 83, 201, 20%);
+    background-color: white;
+  }
+`;
+
+const Option = styled.option``;
+
+const AddExpense = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [add, setAdd] = useState({
+  const [addExpense, setAddExpense] = useState({
     valor: "",
+    categoria: "",
     descricao: "",
   });
 
@@ -108,13 +128,14 @@ const Add = () => {
   const handleCloseModal = () => {
     setIsOpen(false);
     setAddError("");
-    setAdd({
+    setAddExpense({
       valor: "",
+      categoria: "",
       descricao: "",
     });
   };
 
-  const handleAdd = async (e) => {
+  const handleAddExpense = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -124,11 +145,11 @@ const Add = () => {
     );
 
     try {
-      const valorNumerico = parseFloat(add.valor);
+      const valorNumerico = parseFloat(addExpense.valor);
 
       const response = await axios.post(
-        "http://localhost:3006/api/users/add/entrada",
-        { ...add, valor: valorNumerico },
+        "http://localhost:3006/api/users/add/gasto",
+        { ...addExpense, valor: valorNumerico },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -151,28 +172,51 @@ const Add = () => {
   return (
     <div>
       <ButtonContainer>
-        <AddBtn onclick={handleOpenModal} text="Nova entrada" />
-        <AddExpense />
+        <AddBtn onclick={handleOpenModal} text="Nova despesa" />
       </ButtonContainer>
       <ModalBackground isOpen={isOpen}>
         <ModalContent>
           <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
-          <Form onSubmit={handleAdd}>
+          <Form onSubmit={handleAddExpense}>
             <InputContainer>
               <Input
                 type="number"
                 placeholder="Valor"
-                value={add.valor}
-                onChange={(e) => setAdd({ ...add, valor: e.target.value })}
+                value={addExpense.valor}
+                onChange={(e) =>
+                  setAddExpense({ ...addExpense, valor: e.target.value })
+                }
                 style={{ borderColor: addError ? "red" : "" }}
               />
+            </InputContainer>
+            <InputContainer>
+              <Select
+                value={addExpense.categoria}
+                onChange={(e) =>
+                  setAddExpense({ ...addExpense, categoria: e.target.value })
+                }
+                style={{ borderColor: addError ? "red" : "" }}
+              >
+                <Option value="">Selecione uma categoria</Option>
+                <Option value="moradia">Moradia</Option>
+                <Option value="lazer">Lazer</Option>
+                <Option value="entretenimento">Entretenimento</Option>
+                <Option value="alimentacao">Alimentação</Option>
+                <Option value="saude">Saúde</Option>
+                <Option value="vestuario">Vestuário</Option>
+                <Option value="transporte">Transporte</Option>
+                <Option value="educacao">Educação</Option>
+                <Option value="poupanca">Poupança</Option>
+              </Select>
             </InputContainer>
             <InputContainer>
               <Input
                 type="text"
                 placeholder="Descrição"
-                value={add.descricao}
-                onChange={(e) => setAdd({ ...add, descricao: e.target.value })}
+                value={addExpense.descricao}
+                onChange={(e) =>
+                  setAddExpense({ ...addExpense, descricao: e.target.value })
+                }
                 style={{ borderColor: addError ? "red" : "" }}
               />
             </InputContainer>
@@ -188,4 +232,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default AddExpense;

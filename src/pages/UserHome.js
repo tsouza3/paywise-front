@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import backgroundImage from "../assets/wave.svg";
 
 import Add from "../components/add/Add";
-import SidebarExample from "../components/sidebar/Sidebar";
+import Sidebarr from "../components/sidebar/Sidebar";
 
 const HomeContainer = styled.section`
   display: flex;
@@ -28,12 +29,9 @@ const ContentWrapper = styled.div`
   font-weight: 400;
   color: #fff;
   height: 50vh;
-  background-image: linear-gradient(
-    -225deg,
-    #3d4e81 0%,
-    #5753c9 48%,
-    #6e7ff3 100%
-  );
+  background-image: url(${backgroundImage});
+  background-size: cover;
+  background-repeat: no-repeat;
 `;
 
 const TextWrapper = styled.div`
@@ -43,9 +41,9 @@ const TextWrapper = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: start;
-  margin-top: 2em;
-  margin-left: 3em;
+  justify-content: end;
+  margin-right: 2em;
+  margin-top: -2em;
 `;
 
 const UserHome = ({ token }) => {
@@ -79,7 +77,7 @@ const UserHome = ({ token }) => {
   return (
     <HomeContainer>
       <SidebarWrapper>
-        <SidebarExample />
+        <Sidebarr />
       </SidebarWrapper>
 
       <MainContent>
@@ -94,13 +92,13 @@ const UserHome = ({ token }) => {
                 </strong>
               </p>
             ) : null}
-            {saldo !== null ? <h1>R$ {saldo}</h1> : null}
+            {saldo !== null ? <h1>$ {saldo}</h1> : null}
           </TextWrapper>
-        </ContentWrapper>
 
-        <ButtonWrapper>
-          <Add />
-        </ButtonWrapper>
+          <ButtonWrapper>
+            <Add />
+          </ButtonWrapper>
+        </ContentWrapper>
       </MainContent>
     </HomeContainer>
   );
