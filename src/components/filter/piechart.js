@@ -4,10 +4,11 @@ import { Pie } from "react-chartjs-2";
 import styled from "styled-components";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
+const ChartAndLegendContainer = styled.div`
+  display: flex;
+`;
+
 const ChartContainer = styled.div`
-  position: absolute;
-  top: 10%;
-  left: 15%;
   width: 50%;
   height: 50%;
 `;
@@ -15,11 +16,10 @@ const ChartContainer = styled.div`
 const LegendContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 17%;
-  right: 49%;
   font-family: Poppins, "sans-serif";
   color: #333333;
+  margin-left: 3.5em;
+  margin-top: 0.7em;
 `;
 
 const LegendItem = styled.div`
@@ -152,7 +152,7 @@ const PieChart = () => {
   }, [token]);
 
   return (
-    <>
+    <ChartAndLegendContainer>
       <ChartContainer>
         <Pie data={data} options={chartOptions} type="pie" />
       </ChartContainer>
@@ -165,7 +165,7 @@ const PieChart = () => {
           </LegendItem>
         ))}
       </LegendContainer>
-    </>
+    </ChartAndLegendContainer>
   );
 };
 

@@ -27,7 +27,11 @@ const App = () => {
         <Route path="/register" element={<RegistrationForm />} />
         <Route path="/login" element={<Login />} />
 
-        <Route path="/gastos" element={<GastosFiltrados />} />
+        {token ? (
+          <Route path="/gastos" element={<GastosFiltrados token={token} />} />
+        ) : (
+          <Route path="/gastos" element={<Navigate to="/login" />} />
+        )}
 
         {token ? (
           <Route path="/home" element={<UserHome token={token} />} />
