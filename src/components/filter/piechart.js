@@ -6,6 +6,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 const ChartAndLegendContainer = styled.div`
   display: flex;
+  overflow: hidden;
 `;
 
 const ChartContainer = styled.div`

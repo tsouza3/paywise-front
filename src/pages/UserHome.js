@@ -50,6 +50,8 @@ const UserHome = ({ token }) => {
   const [saldo, setSaldo] = useState(null);
   const [name, setName] = useState(null);
 
+  
+
   useEffect(() => {
     const fetchSaldo = async () => {
       try {
@@ -74,6 +76,10 @@ const UserHome = ({ token }) => {
     fetchSaldo();
   }, [token]);
 
+  const atualizarSaldo = (valorAdicionado) => {
+    setSaldo((prevSaldo) => prevSaldo + valorAdicionado);
+  };
+
   return (
     <HomeContainer>
       <SidebarWrapper>
@@ -96,7 +102,7 @@ const UserHome = ({ token }) => {
           </TextWrapper>
 
           <ButtonWrapper>
-            <Add />
+            <Add atualizarSaldo={atualizarSaldo} />
           </ButtonWrapper>
         </ContentWrapper>
       </MainContent>

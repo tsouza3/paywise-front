@@ -83,7 +83,7 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
-const Add = () => {
+const Add = ({atualizarSaldo}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [add, setAdd] = useState({
     valor: "",
@@ -138,7 +138,7 @@ const Add = () => {
 
       if (response.status === 201) {
         handleCloseModal();
-        window.location.reload();
+        atualizarSaldo(valorNumerico);
       }
     } catch (error) {
       setAddError("Erro ao adicionar");

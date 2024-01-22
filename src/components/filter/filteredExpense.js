@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 
-const Container = styled.div``;
+const Container = styled.div`
+overflow-y: auto;
+`;
 
 const Select = styled.select`
   border: 2px solid transparent;
@@ -44,12 +46,17 @@ const InputContainer = styled.div`
   padding-left: 1em;
 `;
 const Wrapper = styled.div`
+
   display: flex;
   margin: 1em;
+
 `;
 
 const Line = styled.hr`
-  background-image: #5753c9;
+border: none; 
+height: 3px; 
+background-color: #3D4E70; 
+
 `;
 
 const DateContainer = styled.div`
@@ -58,7 +65,7 @@ const DateContainer = styled.div`
   align-items: center;
   padding: 0.5em;
 
-  color: #303030;
+  color: #3D4E70;
 `;
 
 const OtherDataContainer = styled.div`
@@ -66,9 +73,16 @@ const OtherDataContainer = styled.div`
   padding: 2em;
 `;
 
+const Category = styled.p`
+color: #3D4E70;
+
+`
+
 const FilteredExpense = () => {
   const [gastos, setGastos] = useState([]);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState("lazer");
+  const [prazoSelecionado, setPrazoSelecionado] = useState("");
+
 
   const token = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
@@ -90,14 +104,28 @@ const FilteredExpense = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(
-          `http://localhost:3006/api/users/gastos/${categoriaSelecionada}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        let url = `http://localhost:3006/api/users/gastos/${categoriaSelecionada}`;
+
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)token\s*=\s*([^;]*).*$)|^.*$/,
+        "$1",
+      );
+
+      if (prazoSelecionado === "7d") {
+        url += "?dias=7";
+      } else if (prazoSelecionado === "15d") {
+        url += "?dias=15";
+      } else if (prazoSelecionado === "30d") {
+        url += "?dias=30";
+      }
+
+      console.log(url, prazoSelecionado);
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
         const formattedData = response.data.entradas.map((item) => {
           const createdAt = new Date(item.createdAt);
@@ -128,11 +156,12 @@ const FilteredExpense = () => {
     <Container>
       <Wrapper>
         <InputContainer>
-          <Select>
+          <Select onChange={(e) => setPrazoSelecionado(e.target.value)}
+            value={prazoSelecionado}>
             <Option value="">Filtrar por prazo</Option>
-            <Option value="">7 Dias</Option>
-            <Option value="">15 Dias </Option>
-            <Option value="">30 Dias</Option>
+            <Option value="7d">7 Dias</Option>
+            <Option value="15d">15 Dias </Option>
+            <Option value="30d">30 Dias</Option>
           </Select>
         </InputContainer>
 
@@ -155,7 +184,7 @@ const FilteredExpense = () => {
         </InputContainer>
       </Wrapper>
       <Ul>
-        {gastos.map((gasto, index) => (
+        {gastos.slice().reverse().map((gasto, index) => (
           <Li key={index}>
             <DateContainer>
               <strong>
@@ -165,7 +194,7 @@ const FilteredExpense = () => {
             <OtherDataContainer>
               <p style={{ color: "red" }}>{`$ ${gasto.valor}`}</p>
               <strong>
-                <p>{gasto.categoria}</p>
+                <Category>{gasto.categoria}</Category>
               </strong>
               <p>Descrição: {gasto.descricao}</p>
               <Line />

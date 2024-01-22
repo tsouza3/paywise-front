@@ -102,7 +102,7 @@ const Select = styled.select`
 
 const Option = styled.option``;
 
-const AddExpense = () => {
+const AddExpense = ({atualizarSaldo}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [addExpense, setAddExpense] = useState({
     valor: "",
@@ -159,7 +159,8 @@ const AddExpense = () => {
 
       if (response.status === 201) {
         handleCloseModal();
-        window.location.reload();
+        atualizarSaldo(-valorNumerico);
+
       }
     } catch (error) {
       setAddError("Erro ao adicionar");

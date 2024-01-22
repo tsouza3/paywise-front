@@ -19,6 +19,7 @@ const Sidebar = styled.div`
     Fira Mono,
     "sans-serif";
   font-weight: 500;
+  
 `;
 
 const MenuItem = styled.div`
